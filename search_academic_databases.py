@@ -48,10 +48,10 @@ def download_pdf_from_link(link,title,query,source):
         with open(output_file, "wb") as file:
             file.write(response.content)
         print(f"PDF downloaded successfully: {output_file}")
+        return [True,response.content]
     else:
         print(f" ***** Failed to download PDF. Status code: {response.status_code} *****")
-        
-    return output_file
+        return [False, response.content]
 
 # query = "deep learning in healthcare"
 # # get the result from arXiv,Google Scholar and PubMed.

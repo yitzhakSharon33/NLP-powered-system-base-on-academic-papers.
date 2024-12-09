@@ -1,4 +1,4 @@
-from pdf_preproccessing import read_pdf_file
+from pdf_preproccessing import contentPreProccsing
 from search_academic_databases import search_academic_databases, download_pdf_from_link
 
 query = "deep learning in healthcare"
@@ -8,12 +8,14 @@ result =search_academic_databases(query, 3)
 for res in result:
     if res['source_data'] == 'GoogleScholar':
         if  res['isFree'] == bool(True):
-          path = download_pdf_from_link(res['link'],res['title'],query,res['source_data'])
-          test = read_pdf_file(path)
+          content = download_pdf_from_link(res['link'],res['title'],query,res['source_data'])
+          if content[0] == True:
+            test = contentPreProccsing(content[1])
             
     else:
-        path = download_pdf_from_link(res['link'], res['title'], query, res['source_data'])
-        test = read_pdf_file(path)
+        content = download_pdf_from_link(res['link'], res['title'], query, res['source_data'])
+        if content[0] == True:
+            test = contentPreProccsing(content[1])
         
 
         
