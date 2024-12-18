@@ -6,6 +6,7 @@ from API.arXiv import search_arxiv
 from API.googleScholar import search_google_scholar
 from API.pubMed import search_pubmed
 import requests
+from io import BytesIO
 
 def search_academic_databases(query, max_results=5):
     print(f"Searching for '{query}'...\n")
@@ -48,10 +49,10 @@ def download_pdf_from_link(link,title,query,source):
         with open(output_file, "wb") as file:
             file.write(response.content)
         print(f"PDF downloaded successfully: {output_file}")
-        return [True,response.content]
+        return {"isSuccess":True,"content":response.content}
     else:
         print(f" ***** Failed to download PDF. Status code: {response.status_code} *****")
-        return [False, response.content]
+        return {"isSuccess":False, "content":response.content}
 
 # query = "deep learning in healthcare"
 # # get the result from arXiv,Google Scholar and PubMed.

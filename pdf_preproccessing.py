@@ -4,6 +4,9 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
+from PyPDF2 import PdfReader
+from io import BytesIO
+import pdfplumber
 
 # Download necessary NLTK data (only needs to be done once)
 nltk.download('punkt')
@@ -76,3 +79,75 @@ def contentPreProccsing(document):
     print("\nTF-IDF Features:")
     for feature, score in zip(feature_names, X.toarray()[0]):
         print(f"{feature}: {score:.4f}")
+
+
+import re
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+
+# Download NLTK resources if necessary
+nltk.download('punkt')
+nltk.download('stopwords')
+
+def extract_text(content):
+    if type(content) is str:
+        return content
+    pdf_file = BytesIO(content)
+    
+    # Read the PDF from the in-memory file
+    reader = PdfReader(pdf_file)
+    text = ''
+    # Extract text from each page
+    for i, page in enumerate(reader.pages):
+        text += page.extract_text()
+    return text
+
+def preprocess_text(text):
+    
+        
+    # Remove non-alphabetic characters
+    text = re.sub(r'[^A-Za-z\s]', '', text)
+    
+    # Tokenize text
+    tokens = word_tokenize(text.lower())
+    
+    # Remove stopwords
+    stop_words = set(stopwords.words('english'))
+    filtered_tokens = [word for word in tokens if word not in stop_words]
+    
+    return filtered_tokens
+
+def extract_section(content):
+    pdf_file = BytesIO(content)
+    
+    # Read the PDF with pdfplumber
+    with pdfplumber.open(pdf_file) as pdf:
+        start_keyword = "abstract"
+        end_keyword = "Introduction"
+        extracting = False
+        section_text = ""
+        
+        for page in pdf.pages:
+            page_text = page.extract_text()
+            if start_keyword in page_text:
+                extracting = True
+            if extracting:
+                section_text += page_text
+                section_text = section_text.split("abstract")[1]
+            if extracting and end_keyword in page_text:
+                break
+    
+    # Output the extracted section
+    print("Extracted Section:")
+    return (section_text)
+
+
+import re
+
+def extract_abstract(text):
+    pattern = r"(?:Abstract|ABSTRACT|Summary)\s*[:\n]([\s\S]*?)(?=\n[A-Z]{2,}|\n1\.|\nIntroduction)"
+    match = re.search(pattern, text)
+    if match:
+        return match.group(1).strip()
+    return None

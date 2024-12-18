@@ -17,19 +17,20 @@ def search_pubmed(query, max_results=5):
         handle = Entrez.esummary(db="pubmed", id=",".join(ids))
         summaries = Entrez.read(handle)
         handle.close()
-        
+        print(summaries)
         results = []
         for summary in summaries:
             results.append({
                 'title': summary['Title'],
                 'source': summary.get('Source'),
                 'pub_date': summary.get('PubDate'),
-                'link': f"https://pubmed.ncbi.nlm.nih.gov/{summary.get('Id')}/",
+                'link': f"https://pubmed.ncbi.nlm.nih.gov/pmc/articles/{summary.get('Id')}/pdf/",
                 'authorList': summary.get('AuthorList')
             })
+            print(f"https://www.ncbi.nlm.nih.gov/pmc/articles/{summary.get('Id')}/pdf/")
         return results
     else:
         print("No results found.")
-        return None
+        return []
 
-search_pubmed("machine learning",5)
+search_pubmed("how to conduct bibliometric analysis",5)
