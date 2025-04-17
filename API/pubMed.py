@@ -20,6 +20,7 @@ def search_pubmed(query, max_results=5):
         print(summaries)
         results = []
         for summary in summaries:
+            print(summary)
             results.append({
                 'title': summary['Title'],
                 'source': summary.get('Source'),

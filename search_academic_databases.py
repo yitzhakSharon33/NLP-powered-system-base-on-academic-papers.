@@ -16,7 +16,7 @@ def search_academic_databases(query, max_results=5):
     arxiv_results = search_arxiv(query, max_results)
     parseResult=[]
     for result in arxiv_results:
-        print(f"Title: {result['title']}\nPublished: {result['published']}\nLink: {result['link']}\n")
+        print(result)
         parseResult.append({'title':result['title'],'Published':result['published'], 'link': result['link'],'source_data':'arXiv'})
     # Search PubMed
     print("\nResults from PubMed:")

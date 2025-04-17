@@ -146,7 +146,7 @@ def extract_section(content):
 import re
 
 def extract_abstract(text):
-    pattern = r"(?:Abstract|ABSTRACT|Summary)\s*[:\n]([\s\S]*?)(?=\n[A-Z]{2,}|\n1\.|\nIntroduction)"
+    pattern = r"(?:Abstract|ABSTRACT|Summary|Introduction)\s*[:\n]([\s\S]*?)(?=\n[A-Z]{2,}|\n1\.|\nIntroduction)"
     match = re.search(pattern, text)
     if match:
         return match.group(1).strip()

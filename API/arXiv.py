@@ -24,12 +24,14 @@ def search_arxiv(query, max_results=5):
         # Iterate over each entry in the arXiv response
         entries = root.findall('{http://www.w3.org/2005/Atom}entry')
         results = []
+        print('arxiv')
+        print(entries)
         for entry in entries:
             title = entry.find('{http://www.w3.org/2005/Atom}title').text
             summary = entry.find('{http://www.w3.org/2005/Atom}summary').text
             published = entry.find('{http://www.w3.org/2005/Atom}published').text
             link = entry.find('{http://www.w3.org/2005/Atom}link').attrib['href']
-            # authors = entry.find('{http://www.w3.org/2005/Atom}author')
+            authors = entry.find('{http://www.w3.org/2005/Atom}author')
             categories = entry.findall('{http://www.w3.org/2005/Atom}:category')
             journal_ref =entry.find('{http://www.w3.org/2005/Atom}:journal_ref')
             results.append({
@@ -39,7 +41,8 @@ def search_arxiv(query, max_results=5):
                 'link': link.replace('/abs/','/pdf/'),
                 # 'author':[author.find('{http://www.w3.org/2005/Atom}:name', ).text for author in authors],
                 'categories': [category.attrib['term'] for category in categories],
-                'journal_ref':journal_ref
+                'journal_ref':journal_ref,
+                'source_data':'arxiv'
             })
     
         return results

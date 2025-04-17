@@ -7,6 +7,7 @@ def search_google_scholar(query, max_results=5):
     for _ in range(max_results):
         try:
             pub = next(search_query)
+            print("search_google_scholar")
             print(json.dumps(pub))
             title =  pub['bib']['title']
             author = pub['bib']['author']
@@ -26,7 +27,6 @@ def search_google_scholar(query, max_results=5):
                 'year': year,
                 'link':link,
                 'isFree': isFree,
-                'absract': author,
                 'citations':citations,
                 'num_citations':num_citations
             })
